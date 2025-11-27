@@ -67,10 +67,10 @@ const loadCompanies = async () => {
     }
 };
 
-const onPerPageChange = (newPerPage: number) => {
+const onPerPageChange = async (newPerPage: number) => {
     perPage.value = newPerPage;
 	page.value = 1;
-    loadCompanies();
+    await loadCompanies();
 };
 
 const formatDate = (dateStr?: string): string => {
