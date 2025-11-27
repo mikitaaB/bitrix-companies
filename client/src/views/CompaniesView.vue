@@ -10,6 +10,7 @@
 					:items-per-page="perPage"
 					:loading="loading"
 					class="elevation-1"
+                    :items-per-page-options="[10, 25, 50]"
 					@update:items-per-page="onPerPageChange"
 				>
 					<template v-slot:loading>

@@ -8,13 +8,16 @@ router.get('/companies', async (req, res) => {
         const page = Number.parseInt(req.query.page, 10) || 1;
         const perPage = Number.parseInt(req.query.perPage, 10) || 50;
 
-        const companies = await getCompanies();
+        if (Number.isNaN(page) || page < 1) {
+            return res.status(400).json({ error: 'Invalid page parameter. Must be >= 1' });
+        }
 
-        const start = (page - 1) * perPage;
-        const end = start + perPage;
+        const allowedPerPage = [10, 25, 50];
+        if (Number.isNaN(perPage) || !allowedPerPage.includes(perPage)) {
+            return res.status(400).json({ error: 'Invalid perPage parameter. Must be one of 10, 25, 50' });
+        }
 
-        const items = companies.slice(start, end);
-        const total = companies.length;
+        const { items, total } = await getCompanies(page, perPage);
 
         res.json({ items, total });
     } catch (error) {

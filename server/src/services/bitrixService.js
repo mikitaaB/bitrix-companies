@@ -1,25 +1,26 @@
 import axios from 'axios';
 
-export async function getCompanies(limit = 10000) {
+export async function getCompanies(page, perPage) {
     const WEBHOOK_URL = process.env['BITRIX_WEBHOOK_URL'];
     if (!WEBHOOK_URL) {
         throw new Error('BITRIX_WEBHOOK_URL is not defined');
     }
-    let allCompanies = [];
-    let start = 0;
 
-    while (allCompanies.length < limit) {
-        const response = await axios.get(`${WEBHOOK_URL}/crm.company.list`, {
-            params: { start },
-            timeout: 60000
-        });
+    const offset = (page - 1) * perPage;
+    const batchStart = Math.floor(offset / 50) * 50;
 
-        const companies = response.data.result;
-        allCompanies.push(...companies);
+    const response = await axios.get(`${WEBHOOK_URL}/crm.company.list`, {
+        params: {
+            start: batchStart,
+            select: ["ID","TITLE","COMPANY_TYPE","INDUSTRY","REVENUE","CURRENCY_ID","EMPLOYEES","DATE_CREATE","DATE_MODIFY"]
+        },
+        timeout: 60000
+    });
 
-        if (!response.data.next) break;
-        start = response.data.next;
-    }
+    const batch = response.data.result || [];
+    const startInBatch = offset % 50;
+    const items = batch.slice(startInBatch, startInBatch + perPage);
+    const total = response.data.total;
 
-    return allCompanies.slice(0, limit);
+    return { items, total };
 }

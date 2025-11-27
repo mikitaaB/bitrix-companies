@@ -8,9 +8,6 @@ export interface Company {
     EMPLOYEES?: string;
     DATE_CREATE?: string;
     DATE_MODIFY?: string;
-    ADDRESS?: string;
-    PHONE?: string;
-    EMAIL?: string;
 }
 
 export interface PaginatedResponse<T> {
