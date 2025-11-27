@@ -20,10 +20,10 @@ It connects to **Bitrix24 REST API** via a webhook, retrieves up to **10,000 com
 
 2. Adjust the values in `.env` as needed for your local environment.
 
-```bash
-git clone https://github.com/mikitaaB/bitrix-companies.git
-cd bitrix24-companies
-```
+   ```
+   git clone https://github.com/mikitaaB/bitrix-companies.git
+   cd bitrix24-companies
+   ```
 
 ### Server setup
 1. Install server dependencies:
